@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "panorama",
+  "version": "${version}",
+  "name": "Panorama",
+  "description": "Take panoramic screenshots in Minecraft",
+  "authors": [
+    "teal (Tiny Improvements)",
+    "SWDTeam (Original)"
+  ],
+  "contact": {
+    "website": "https://github.com/tealreal/panoramas",
+    "homepage": "https://github.com/tealreal/panoramas",
+    "sources": "https://github.com/tealreal/panoramas"
+  },
+  "license": "GPL v3",
+  "icon": "assets/panorama/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "teal.panorama.Main"
+    ]
+  },
+  "mixins": [
+    "panorama.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": ">=${fabric_version}",
+    "minecraft": "~1.20"
+  },
+  "accessWidener": "panorama.accesswidener"
+}

@@ -1,0 +1,8 @@
+accessWidener	v1	named
+accessible	field	net/minecraft/client/util/Window	windowedX	I
+accessible	field	net/minecraft/client/util/Window	windowedY	I
+accessible	field	net/minecraft/client/util/Window	x	I
+accessible	field	net/minecraft/client/util/Window	y	I
+accessible	field	net/minecraft/client/util/Window	handle	J
+accessible	method	net/minecraft/client/util/Window	updateWindowRegion	()V
+accessible	method	net/minecraft/client/util/Window	onFramebufferSizeChanged	(JII)V

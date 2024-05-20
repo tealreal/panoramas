@@ -1,0 +1,15 @@
+{
+  "panorama.title": "Panorama",
+  "panorama.keybinds.screenshot": "Take Panorama Screenshot",
+  "panorama.gui.menu.main": "Panorama Selection GUI",
+  "panorama.gui.menu.search": "Search",
+  "panorama.gui.menu.prevpage": "Previous Page",
+  "panorama.gui.menu.nextpage": "Next Page",
+  "panorama.gui.menu.reload": "Reload",
+  "panorama.gui.menu.reset.tooltip": "Sets the panorama to the default textures provided by the game.",
+  "panorama.gui.menu.resolution.warning": "This will cause lag when rendered.",
+  "panorama.gui.menu.resolution": "(Capture Res)",
+  "panorama.gui.menu.selector": "Panorama Selector",
+  "panorama.gui.menu.nosearchresults": "No Panoramas Found",
+  "panorama.messages.saved": "Panorama saved as: "
+}
