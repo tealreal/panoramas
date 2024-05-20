@@ -38,19 +38,20 @@ public class GuiPanoramaSelector extends Screen {
     protected void init() {
         super.init();
         this.page = 0;
-        this.searchBox = new TextFieldWidget(this.client.textRenderer, this.width / 2 - 148, this.height / 2 + 80, 70, 20, null, new TranslatableText("panorama.search"));
-        this.addDrawableChild(this.searchBox);
+        this.searchBox = new TextFieldWidget(this.client.textRenderer, this.width / 2 - 148, this.height / 2 + 80, 70, 20, null, new TranslatableText("panorama.gui.search"));
+        this.addChild(this.searchBox);
         this.focusOn(this.searchBox);
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 72, this.height / 2 + 80, 46, 20, new TranslatableText("panorama.gui.menu.search"), (b) -> {
+        this.addButton(new ButtonWidget(this.width / 2 - 72, this.height / 2 + 80, 46, 20, new TranslatableText("panorama.gui.menu.search"), (b) -> {
             if (this.searchBox.getText() != null && !this.searchBox.getText().isEmpty()) {
-                this.page = 0;
                 this.panoramas = PanoramaRegistry.getAllForName(this.searchBox.getText());
-                this.btnNextPage.active = this.panoramas.size() > 8;
-
-                this.refreshButtons();
+            } else {
+                this.panoramas = PanoramaRegistry.PANORAMAS;
             }
+            this.page = 0;
+            this.btnNextPage.active = this.panoramas.size() > 8;
+            this.refreshButtons();
         }));
-        this.btnPreviousPage = this.addDrawableChild(new ButtonWidget(this.width / 2 - 22, this.height / 2 + 80, 80, 20, new TranslatableText("panorama.gui.menu.prevpage"), (b) -> {
+        this.btnPreviousPage = this.addButton(new ButtonWidget(this.width / 2 - 22, this.height / 2 + 80, 80, 20, new TranslatableText("panorama.gui.menu.prevpage"), (b) -> {
             if (this.page - 1 >= 0) {
                 --this.page;
                 this.btnNextPage.active = true;
@@ -61,7 +62,7 @@ public class GuiPanoramaSelector extends Screen {
             }
         }));
         this.btnPreviousPage.active = false;
-        this.btnNextPage = this.addDrawableChild(new ButtonWidget(this.width / 2 + 62, this.height / 2 + 80, 80, 20, new TranslatableText("panorama.gui.menu.nextpage"), (b) -> {
+        this.btnNextPage = this.addButton(new ButtonWidget(this.width / 2 + 62, this.height / 2 + 80, 80, 20, new TranslatableText("panorama.gui.menu.nextpage"), (b) -> {
             if ((this.page + 1) * 8 < this.panoramas.size()) {
                 ++this.page;
                 this.btnPreviousPage.active = true;
@@ -72,15 +73,15 @@ public class GuiPanoramaSelector extends Screen {
             }
 
         }));
-        this.addDrawableChild(new ButtonWidget(4, 4, 60, 20, new TranslatableText("gui.back"), (b) -> {
+        this.addButton(new ButtonWidget(4, 4, 60, 20, new TranslatableText("gui.back"), (b) -> {
             if (MinecraftClient.getInstance().world == null) {
-                MinecraftClient.getInstance().setScreen(new TitleScreen());
+                MinecraftClient.getInstance().openScreen(new TitleScreen());
             } else {
-                MinecraftClient.getInstance().setScreen(new GameMenuScreen(true));
+                MinecraftClient.getInstance().openScreen(new GameMenuScreen(true));
             }
         }));
 
-        this.addDrawableChild(new ButtonWidget(70, 4, 80, 20, Config.INSTANCE.save_resolution.name, (b) -> {
+        this.addButton(new ButtonWidget(70, 4, 80, 20, Config.INSTANCE.save_resolution.name, (b) -> {
             int order = Config.INSTANCE.save_resolution.ordinal() + 1;
             Config.INSTANCE.save_resolution = Main.CaptureResolution.rs[order % Main.CaptureResolution.rs.length];
             b.setMessage(Config.INSTANCE.save_resolution.name);
@@ -90,7 +91,7 @@ public class GuiPanoramaSelector extends Screen {
             if (tooltip != null) GuiPanoramaSelector.this.renderTooltip(matrices, tooltip, mouseX, mouseY);
         }));
 
-        this.addDrawableChild(new ButtonWidget(this.width - 64, 4, 60, 20, new TranslatableText("panorama.gui.menu.reload"), (b) -> {
+        this.addButton(new ButtonWidget(this.width - 64, 4, 60, 20, new TranslatableText("panorama.gui.menu.reload"), (b) -> {
             this.page = 0;
             PanoramaRegistry.setup();
             this.panoramas = PanoramaRegistry.PANORAMAS;
@@ -98,7 +99,7 @@ public class GuiPanoramaSelector extends Screen {
 
             this.refreshButtons();
         }));
-        this.addDrawableChild(new ButtonWidget(this.width - 128, 4, 60, 20, new TranslatableText("controls.reset"), (b) -> {
+        this.addButton(new ButtonWidget(this.width - 128, 4, 60, 20, new TranslatableText("controls.reset"), (b) -> {
             try {
                 Util.loadPack("");
             } catch (Exception e) {
@@ -121,7 +122,8 @@ public class GuiPanoramaSelector extends Screen {
         int i;
         for (i = 0; i < this.panoButtons.size(); ++i) {
             PanoramaButton b = this.panoButtons.get(i);
-            this.remove(b);
+            this.buttons.remove(b);
+            this.children.remove(b);
         }
 
         for (i = this.page * 8; i < this.page * 8 + 8; ++i) {
@@ -134,7 +136,7 @@ public class GuiPanoramaSelector extends Screen {
     }
 
     public void addPanoramaButton(PanoramaButton btn) {
-        this.addDrawableChild(btn);
+        this.addButton(btn);
         this.panoButtons.add(btn);
     }
 

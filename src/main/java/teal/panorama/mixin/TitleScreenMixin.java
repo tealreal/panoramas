@@ -36,8 +36,8 @@ public abstract class TitleScreenMixin extends Screen {
     )
     private void initWidgetsNormal(int y, int spacingY, CallbackInfo ci) {
         Main.SKYBOX = this.backgroundRenderer;
-        this.addDrawableChild(new ButtonWidget(4, 4, 60, 20, new TranslatableText("panorama.title"), (b) ->
-            MinecraftClient.getInstance().setScreen(new GuiPanoramaSelector())
+        this.addButton(new ButtonWidget(4, 4, 60, 20, new TranslatableText("panorama.title"), (b) ->
+            MinecraftClient.getInstance().openScreen(new GuiPanoramaSelector())
         ));
     }
 }

@@ -24,8 +24,8 @@ public abstract class GameMenuScreenMixin extends Screen {
         method = "init()V"
     )
     private void init(CallbackInfo info) {
-        this.addDrawableChild(new ButtonWidget(4, 4, 60, 20, new TranslatableText("panorama.title"), (b) ->
-            MinecraftClient.getInstance().setScreen(new GuiPanoramaSelector())
+        this.addButton(new ButtonWidget(4, 4, 60, 20, new TranslatableText("panorama.title"), (b) ->
+            MinecraftClient.getInstance().openScreen(new GuiPanoramaSelector())
         ));
     }
 }

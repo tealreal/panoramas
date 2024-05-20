@@ -2,6 +2,7 @@ package teal.panorama.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.CubeMapRenderer;
+import net.minecraft.client.texture.TextureManager;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,13 +24,13 @@ public abstract class CubeMapRendererMixin {
         method = "draw",
         at = @At(
             value = "INVOKE",
-            target = "Lcom/mojang/blaze3d/systems/RenderSystem;setShaderTexture(ILnet/minecraft/util/Identifier;)V"
+            target = "Lnet/minecraft/client/texture/TextureManager;bindTexture(Lnet/minecraft/util/Identifier;)V"
         )
     )
-    private void setShaderTextureRedirect(int texture, Identifier id) {
+    private void setShaderTextureRedirect(TextureManager instance, Identifier id) {
         if (Main.textures != null && Main.textures.length >= 6) {
-            RenderSystem.setShaderTexture(texture, Main.textures[Arrays.asList(faces).indexOf(id)].getGlId());
-        } else RenderSystem.setShaderTexture(texture, id);
+            Main.textures[Arrays.asList(faces).indexOf(id)].bindTexture();
+        } else instance.bindTexture(id);
     }
 
 }

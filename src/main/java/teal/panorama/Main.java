@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gui.RotatingCubeMapRenderer;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.option.Perspective;
@@ -12,12 +13,12 @@ import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.client.util.InputUtil.Type;
-import net.minecraft.client.util.ScreenshotRecorder;
+import net.minecraft.client.util.ScreenshotUtils;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import teal.panorama.event.RenderEvent;
 import teal.panorama.event.RenderWorldEvent;
 import teal.panorama.mixin.MCAccessor;
@@ -30,7 +31,7 @@ import java.util.Map;
 
 public class Main implements ClientModInitializer {
 
-    public static final Logger logger = LoggerFactory.getLogger(Main.class);
+    public static final Logger logger = LogManager.getLogger(Main.class);
     public static NativeImageBackedTexture[] textures;
     public static int WIN_BACK_WIDTH;
     public static int WIN_BACK_HEIGHT;
@@ -47,7 +48,8 @@ public class Main implements ClientModInitializer {
 
     public static void takeScreenshot(int index) {
         MinecraftClient client = MinecraftClient.getInstance();
-        NativeImage image = ScreenshotRecorder.takeScreenshot(client.getFramebuffer());
+        Framebuffer framebuffer = client.getFramebuffer();
+        NativeImage image = ScreenshotUtils.takeScreenshot(framebuffer.textureWidth, framebuffer.textureHeight, framebuffer);
         File file = new File("temp/panorama_" + index + ".png");
         if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
