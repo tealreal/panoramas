@@ -1,9 +1,10 @@
 package teal.panorama.ui;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import teal.panorama.Main;
@@ -31,10 +32,13 @@ public class PanoramaButton extends ButtonWidget {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float partialTicks) {
-        super.render(context, mouseX, mouseY, partialTicks);
-        context.drawTexture(this.icon, this.getX(), this.getY(), 0.0F, 0.0F, 64, 64, 64, 64);
-        context.drawTexture(BORDER, this.getX() - 2, this.getY() - 2, 0.0F, 0.0F, 70, 70, 70, 70);
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float partialTicks) {
+        super.render(matrices, mouseX, mouseY, partialTicks);
+        RenderSystem.setShaderTexture(0, this.icon);
+        RenderSystem.enableDepthTest();
+        drawTexture(matrices, this.getX(), this.getY(), 0.0F, 0.0F, 64, 64, 64, 64);
+        RenderSystem.setShaderTexture(0, BORDER);
+        drawTexture(matrices, this.getX() - 2, this.getY() - 2, 0.0F, 0.0F, 70, 70, 70, 70);
     }
 
     @Override

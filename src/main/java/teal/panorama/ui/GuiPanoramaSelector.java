@@ -1,13 +1,14 @@
 package teal.panorama.ui;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
@@ -138,19 +139,19 @@ public class GuiPanoramaSelector extends Screen {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float partialTicks) {
         Main.SKYBOX.render(partialTicks, MathHelper.clamp(1.0F, 0.0F, 1.0F));
-        context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("panorama.gui.menu.resolution"), 110, 26, -1052689);
-        context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("panorama.gui.menu.selector"), this.width / 2, this.height / 2 - 102, -1);
+        drawCenteredTextWithShadow(matrices, textRenderer, Text.translatable("panorama.gui.menu.resolution"), 110, 26, -1052689);
+        drawCenteredTextWithShadow(matrices, textRenderer, Text.translatable("panorama.gui.menu.selector"), this.width / 2, this.height / 2 - 102, -1);
         if (this.panoramas.isEmpty()) {
-            context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("panorama.gui.menu.nosearchresults"), this.width / 2, this.height / 2, -1);
+            drawCenteredTextWithShadow(matrices, textRenderer, Text.translatable("panorama.gui.menu.nosearchresults"), this.width / 2, this.height / 2, -1);
         }
 
         if (this.searchBox != null) {
-            this.searchBox.render(context, mouseX, mouseY, partialTicks);
+            this.searchBox.render(matrices, mouseX, mouseY, partialTicks);
         }
 
-        super.render(context, mouseX, mouseY, partialTicks);
+        super.render(matrices, mouseX, mouseY, partialTicks);
     }
 
     @Override
