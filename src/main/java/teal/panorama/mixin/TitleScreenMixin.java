@@ -6,6 +6,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -35,8 +36,8 @@ public abstract class TitleScreenMixin extends Screen {
     )
     private void initWidgetsNormal(int y, int spacingY, CallbackInfo ci) {
         Main.SKYBOX = this.backgroundRenderer;
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("panorama.title"), (b) ->
+        this.addDrawableChild(new ButtonWidget(4, 4, 60, 20, new TranslatableText("panorama.title"), (b) ->
             MinecraftClient.getInstance().setScreen(new GuiPanoramaSelector())
-        ).dimensions(4, 4, 60, 20).build());
+        ));
     }
 }

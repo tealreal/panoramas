@@ -4,12 +4,11 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
-import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
@@ -31,7 +30,7 @@ public class GuiPanoramaSelector extends Screen {
     private int page = 0;
 
     public GuiPanoramaSelector() {
-        super(Text.translatable("panorama.gui.menu.main"));
+        super(new TranslatableText("panorama.gui.menu.main"));
         this.panoramas = PanoramaRegistry.PANORAMAS;
     }
 
@@ -39,10 +38,10 @@ public class GuiPanoramaSelector extends Screen {
     protected void init() {
         super.init();
         this.page = 0;
-        this.searchBox = new TextFieldWidget(this.client.textRenderer, this.width / 2 - 148, this.height / 2 + 80, 70, 20, null, Text.translatable("panorama.search"));
+        this.searchBox = new TextFieldWidget(this.client.textRenderer, this.width / 2 - 148, this.height / 2 + 80, 70, 20, null, new TranslatableText("panorama.search"));
         this.addDrawableChild(this.searchBox);
         this.focusOn(this.searchBox);
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("panorama.gui.menu.search"), (b) -> {
+        this.addDrawableChild(new ButtonWidget(this.width / 2 - 72, this.height / 2 + 80, 46, 20, new TranslatableText("panorama.gui.menu.search"), (b) -> {
             if (this.searchBox.getText() != null && !this.searchBox.getText().isEmpty()) {
                 this.page = 0;
                 this.panoramas = PanoramaRegistry.getAllForName(this.searchBox.getText());
@@ -50,8 +49,8 @@ public class GuiPanoramaSelector extends Screen {
 
                 this.refreshButtons();
             }
-        }).dimensions(this.width / 2 - 72, this.height / 2 + 80, 46, 20).build());
-        this.btnPreviousPage = this.addDrawableChild(ButtonWidget.builder(Text.translatable("panorama.gui.menu.prevpage"), (b) -> {
+        }));
+        this.btnPreviousPage = this.addDrawableChild(new ButtonWidget(this.width / 2 - 22, this.height / 2 + 80, 80, 20, new TranslatableText("panorama.gui.menu.prevpage"), (b) -> {
             if (this.page - 1 >= 0) {
                 --this.page;
                 this.btnNextPage.active = true;
@@ -60,9 +59,9 @@ public class GuiPanoramaSelector extends Screen {
                     this.btnPreviousPage.active = false;
                 }
             }
-        }).dimensions(this.width / 2 - 22, this.height / 2 + 80, 80, 20).build());
+        }));
         this.btnPreviousPage.active = false;
-        this.btnNextPage = this.addDrawableChild(ButtonWidget.builder(Text.translatable("panorama.gui.menu.nextpage"), (b) -> {
+        this.btnNextPage = this.addDrawableChild(new ButtonWidget(this.width / 2 + 62, this.height / 2 + 80, 80, 20, new TranslatableText("panorama.gui.menu.nextpage"), (b) -> {
             if ((this.page + 1) * 8 < this.panoramas.size()) {
                 ++this.page;
                 this.btnPreviousPage.active = true;
@@ -72,39 +71,40 @@ public class GuiPanoramaSelector extends Screen {
                 }
             }
 
-        }).dimensions(this.width / 2 + 62, this.height / 2 + 80, 80, 20).build());
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("gui.back"), (b) -> {
+        }));
+        this.addDrawableChild(new ButtonWidget(4, 4, 60, 20, new TranslatableText("gui.back"), (b) -> {
             if (MinecraftClient.getInstance().world == null) {
                 MinecraftClient.getInstance().setScreen(new TitleScreen());
             } else {
                 MinecraftClient.getInstance().setScreen(new GameMenuScreen(true));
             }
-        }).dimensions(4, 4, 60, 20).build());
+        }));
 
-        this.addDrawableChild(ButtonWidget.builder(Config.INSTANCE.save_resolution.name, (b) -> {
+        this.addDrawableChild(new ButtonWidget(70, 4, 80, 20, Config.INSTANCE.save_resolution.name, (b) -> {
             int order = Config.INSTANCE.save_resolution.ordinal() + 1;
             Config.INSTANCE.save_resolution = Main.CaptureResolution.rs[order % Main.CaptureResolution.rs.length];
             b.setMessage(Config.INSTANCE.save_resolution.name);
-            b.setTooltip(getSizeWarning());
             Config.save();
-        }).tooltip(getSizeWarning()).dimensions(70, 4, 80, 20).build());
+        }, (button, matrices, mouseX, mouseY) -> {
+            Text tooltip = getSizeWarning();
+            if (tooltip != null) GuiPanoramaSelector.this.renderTooltip(matrices, tooltip, mouseX, mouseY);
+        }));
 
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("panorama.gui.menu.reload"), (b) -> {
+        this.addDrawableChild(new ButtonWidget(this.width - 64, 4, 60, 20, new TranslatableText("panorama.gui.menu.reload"), (b) -> {
             this.page = 0;
             PanoramaRegistry.setup();
             this.panoramas = PanoramaRegistry.PANORAMAS;
             this.btnNextPage.active = this.panoramas.size() > 8;
 
             this.refreshButtons();
-        }).dimensions(this.width - 64, 4, 60, 20).build());
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("controls.reset"), (b) -> {
-                try {
-                    Util.loadPack("");
-                } catch (Exception e) {
-                    Main.logger.error(e.getLocalizedMessage());
-                }
-            }).tooltip(Tooltip.of(Text.translatable("panorama.gui.menu.reset.tooltip")))
-            .dimensions(this.width - 128, 4, 60, 20).build());
+        }));
+        this.addDrawableChild(new ButtonWidget(this.width - 128, 4, 60, 20, new TranslatableText("controls.reset"), (b) -> {
+            try {
+                Util.loadPack("");
+            } catch (Exception e) {
+                Main.logger.error(e.getLocalizedMessage());
+            }
+        }, ((button, matrices, mouseX, mouseY) -> GuiPanoramaSelector.this.renderTooltip(matrices, new TranslatableText("panorama.gui.menu.reset.tooltip"), mouseX, mouseY))));
         if (this.panoramas.size() <= 8) {
             this.btnNextPage.active = false;
         }
@@ -113,8 +113,8 @@ public class GuiPanoramaSelector extends Screen {
     }
 
     @Nullable
-    public Tooltip getSizeWarning() {
-        return Config.INSTANCE.save_resolution.res >= 8192 ? Tooltip.of(Text.translatable("panorama.gui.menu.resolution.warning").formatted(Formatting.RED)) : null;
+    public Text getSizeWarning() {
+        return Config.INSTANCE.save_resolution.res >= 8192 ? new TranslatableText("panorama.gui.menu.resolution.warning").formatted(Formatting.RED) : null;
     }
 
     public void refreshButtons() {
@@ -127,7 +127,7 @@ public class GuiPanoramaSelector extends Screen {
         for (i = this.page * 8; i < this.page * 8 + 8; ++i) {
             if (i < this.panoramas.size()) {
                 PanoramaInstance pan = this.panoramas.get(i);
-                this.addPanoramaButton(new PanoramaButton(pan, this.width / 2 - 148 + i % 4 * 74, this.height / 2 + i % 8 / 4 * 74 - 74));
+                this.addPanoramaButton(new PanoramaButton(pan, this.width / 2 - 148 + i % 4 * 74, this.height / 2 + i % 8 / 4 * 74 - 74, ((button, matrices, mouseX, mouseY) -> GuiPanoramaSelector.this.renderTooltip(matrices, Text.of(pan.getPanoramaName()), mouseX, mouseY))));
             }
         }
 
@@ -141,10 +141,10 @@ public class GuiPanoramaSelector extends Screen {
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float partialTicks) {
         Main.SKYBOX.render(partialTicks, MathHelper.clamp(1.0F, 0.0F, 1.0F));
-        drawCenteredTextWithShadow(matrices, textRenderer, Text.translatable("panorama.gui.menu.resolution"), 110, 26, -1052689);
-        drawCenteredTextWithShadow(matrices, textRenderer, Text.translatable("panorama.gui.menu.selector"), this.width / 2, this.height / 2 - 102, -1);
+        drawCenteredText(matrices, textRenderer, new TranslatableText("panorama.gui.menu.resolution"), 110, 26, -1052689);
+        drawCenteredText(matrices, textRenderer, new TranslatableText("panorama.gui.menu.selector"), this.width / 2, this.height / 2 - 102, -1);
         if (this.panoramas.isEmpty()) {
-            drawCenteredTextWithShadow(matrices, textRenderer, Text.translatable("panorama.gui.menu.nosearchresults"), this.width / 2, this.height / 2, -1);
+            drawCenteredText(matrices, textRenderer, new TranslatableText("panorama.gui.menu.nosearchresults"), this.width / 2, this.height / 2, -1);
         }
 
         if (this.searchBox != null) {

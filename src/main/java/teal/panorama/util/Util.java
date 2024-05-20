@@ -6,6 +6,7 @@ import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import teal.panorama.Config;
 import teal.panorama.Main;
 import teal.panorama.registry.PanoramaRegistry;
@@ -50,7 +51,7 @@ public class Util {
 
                     zos.close();
 
-                    MinecraftClient.getInstance().player.sendMessage(Text.translatable("panorama.messages.saved").append(Text.literal(images).setStyle(Style.EMPTY.withUnderline(true).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, file.getAbsolutePath())))), false);
+                    MinecraftClient.getInstance().player.sendMessage(new TranslatableText("panorama.messages.saved").append(Text.of(images).copy().setStyle(Style.EMPTY.withUnderline(true).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, file.getAbsolutePath())))), false);
                     PanoramaRegistry.addPanorama(file.getName(), new NativeImageBackedTexture(imgs[0]));
                 } catch (IOException e) {
                     Main.logger.error("Error creating zip file: {}", e.getLocalizedMessage());

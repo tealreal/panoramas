@@ -2,7 +2,6 @@ package teal.panorama.ui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -16,19 +15,11 @@ public class PanoramaButton extends ButtonWidget {
     private final Identifier icon;
     private final PanoramaInstance panorama;
 
-    public PanoramaButton(PanoramaInstance panorama, int x, int y) {
-        super(x, y, 64, 64, Text.literal(""), null, ButtonWidget.DEFAULT_NARRATION_SUPPLIER);
+    public PanoramaButton(PanoramaInstance panorama, int x, int y, TooltipSupplier tooltipSupplier) {
+        super(x, y, 64, 64, Text.of(""), null, tooltipSupplier);
         this.panorama = panorama;
-        this.setTooltip(Tooltip.of(Text.literal(panorama.getPanoramaName())));
-
         this.icon = new Identifier("panorama", panorama.getPanoramaName());
         MinecraftClient.getInstance().getTextureManager().registerTexture(icon, panorama.getIcon());
-    }
-
-    @Override
-    public void setPosition(int xIn, int yIn) {
-        this.setX(xIn);
-        this.setY(yIn);
     }
 
     @Override
@@ -36,9 +27,9 @@ public class PanoramaButton extends ButtonWidget {
         super.render(matrices, mouseX, mouseY, partialTicks);
         RenderSystem.setShaderTexture(0, this.icon);
         RenderSystem.enableDepthTest();
-        drawTexture(matrices, this.getX(), this.getY(), 0.0F, 0.0F, 64, 64, 64, 64);
+        drawTexture(matrices, this.x, this.y, 0.0F, 0.0F, 64, 64, 64, 64);
         RenderSystem.setShaderTexture(0, BORDER);
-        drawTexture(matrices, this.getX() - 2, this.getY() - 2, 0.0F, 0.0F, 70, 70, 70, 70);
+        drawTexture(matrices, this.x - 2, this.y - 2, 0.0F, 0.0F, 70, 70, 70, 70);
     }
 
     @Override

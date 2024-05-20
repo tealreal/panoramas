@@ -76,7 +76,7 @@ public class Main implements ClientModInitializer {
         SCREENSHOT = KeyBindingHelper.registerKeyBinding(new KeyBinding("panorama.keybinds.screenshot", Type.KEYSYM, 293, "panorama.title"));
         ClientTickEvents.START_CLIENT_TICK.register((client) -> {
             if (MinecraftClient.getInstance().world != null && MinecraftClient.getInstance().cameraEntity != null && SCREENSHOT.isPressed() && !takePanorama) {
-                if (Config.INSTANCE.save_resolution != Main.CaptureResolution.DEFAULT) {
+                if (Config.INSTANCE.save_resolution != CaptureResolution.DEFAULT) {
                     WIN_BACK_WIDTH = MinecraftClient.getInstance().getWindow().getFramebufferWidth();
                     WIN_BACK_HEIGHT = MinecraftClient.getInstance().getWindow().getFramebufferHeight();
                     MinecraftClient.getInstance().getWindow().onFramebufferSizeChanged(MinecraftClient.getInstance().getWindow().handle, Config.INSTANCE.save_resolution.res, Config.INSTANCE.save_resolution.res);
@@ -121,8 +121,8 @@ public class Main implements ClientModInitializer {
 
         CaptureResolution(int i) {
             this.res = i;
-            this.name = Text.literal(i == 0 ? "Default" : (i + "px")).append(
-                Text.literal((i > 4096) ? " !" : "").formatted(Formatting.RED, Formatting.BOLD)
+            this.name = Text.of(i == 0 ? "Default" : (i + "px")).copy().append(
+                Text.of((i > 4096) ? " !" : "").copy().formatted(Formatting.RED, Formatting.BOLD)
             );
         }
 
@@ -144,7 +144,7 @@ public class Main implements ClientModInitializer {
             this.pitch = pitch;
         }
 
-        public static Main.Facing getIndex(int index) {
+        public static Facing getIndex(int index) {
             return values()[index];
         }
 

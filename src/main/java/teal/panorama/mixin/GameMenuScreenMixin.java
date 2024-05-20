@@ -5,6 +5,7 @@ import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -23,8 +24,8 @@ public abstract class GameMenuScreenMixin extends Screen {
         method = "init()V"
     )
     private void init(CallbackInfo info) {
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("panorama.title"), (b) ->
+        this.addDrawableChild(new ButtonWidget(4, 4, 60, 20, new TranslatableText("panorama.title"), (b) ->
             MinecraftClient.getInstance().setScreen(new GuiPanoramaSelector())
-        ).dimensions(4, 4, 60, 20).build());
+        ));
     }
 }
