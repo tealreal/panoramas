@@ -43,12 +43,13 @@ public class GuiPanoramaSelector extends Screen {
         this.focusOn(this.searchBox);
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("panorama.gui.menu.search"), (b) -> {
             if (this.searchBox.getText() != null && !this.searchBox.getText().isEmpty()) {
-                this.page = 0;
                 this.panoramas = PanoramaRegistry.getAllForName(this.searchBox.getText());
-                this.btnNextPage.active = this.panoramas.size() > 8;
-
-                this.refreshButtons();
+            } else {
+                this.panoramas = PanoramaRegistry.PANORAMAS;
             }
+            this.page = 0;
+            this.btnNextPage.active = this.panoramas.size() > 8;
+            this.refreshButtons();
         }).dimensions(this.width / 2 - 72, this.height / 2 + 80, 46, 20).build());
         this.btnPreviousPage = this.addDrawableChild(ButtonWidget.builder(Text.translatable("panorama.gui.menu.prevpage"), (b) -> {
             if (this.page - 1 >= 0) {
