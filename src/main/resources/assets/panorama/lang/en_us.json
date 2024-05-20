@@ -2,6 +2,7 @@
   "panorama.title": "Panorama",
   "panorama.keybinds.screenshot": "Take Panorama Screenshot",
   "panorama.gui.menu.main": "Panorama Selection GUI",
+  "panorama.gui.search": "Search...",
   "panorama.gui.menu.search": "Search",
   "panorama.gui.menu.prevpage": "Previous Page",
   "panorama.gui.menu.nextpage": "Next Page",
