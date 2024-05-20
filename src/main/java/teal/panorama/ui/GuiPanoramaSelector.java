@@ -38,7 +38,7 @@ public class GuiPanoramaSelector extends Screen {
     protected void init() {
         super.init();
         this.page = 0;
-        this.searchBox = new TextFieldWidget(this.client.textRenderer, this.width / 2 - 148, this.height / 2 + 80, 70, 20, null, Text.translatable("panorama.search"));
+        this.searchBox = new TextFieldWidget(this.client.textRenderer, this.width / 2 - 148, this.height / 2 + 80, 70, 20, null, Text.translatable("panorama.gui.search"));
         this.addDrawableChild(this.searchBox);
         this.focusOn(this.searchBox);
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("panorama.gui.menu.search"), (b) -> {
