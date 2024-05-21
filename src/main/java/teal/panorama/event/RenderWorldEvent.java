@@ -1,20 +1,20 @@
 package teal.panorama.event;
 
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents.End;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.Perspective;
+import net.minecraft.client.world.ClientWorld;
 import teal.panorama.Config;
 import teal.panorama.Main;
 import teal.panorama.mixin.MCAccessor;
 import teal.panorama.mixin.RTCAccessor;
 import teal.panorama.util.Util;
 
-public class RenderWorldEvent implements End {
-    public void onEnd(WorldRenderContext context) {
+public class RenderWorldEvent implements ClientTickEvents.EndWorldTick {
+    @Override
+    public void onEndTick(ClientWorld world) {
         MinecraftClient mc = MinecraftClient.getInstance();
         if (Main.takePanorama) {
-            mc.options.setPerspective(Perspective.FIRST_PERSON);
+            mc.options.perspective = 0;
             mc.options.hudHidden = true;
             if (Main.timer >= 1) {
                 Main.timer = 0;
@@ -29,7 +29,7 @@ public class RenderWorldEvent implements End {
                     Main.IMAGES.put(Main.currentName, Main.screenshots);
                     Main.takePanorama = false;
                     ((RTCAccessor) ((MCAccessor) mc).getRenderTickCounter()).setTickTime((float) 1000 / 20);
-                    mc.options.setPerspective(Main.PERSPECTIVE);
+                    mc.options.perspective = Main.PERSPECTIVE;
                     mc.options.hudHidden = false;
 
                     try {

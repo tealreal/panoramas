@@ -27,7 +27,7 @@
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric": ">=${fabric_version}",
-    "minecraft": "~1.16"
+    "minecraft": "~1.15"
   },
   "accessWidener": "panorama.accesswidener"
 }

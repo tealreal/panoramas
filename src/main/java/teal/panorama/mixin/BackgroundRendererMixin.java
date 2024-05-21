@@ -2,7 +2,7 @@ package teal.panorama.mixin;
 
 import net.minecraft.client.render.BackgroundRenderer;
 import net.minecraft.client.render.Camera;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.client.util.math.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -14,10 +14,10 @@ public abstract class BackgroundRendererMixin {
         method = "render",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/render/Camera;getHorizontalPlane()Lnet/minecraft/util/math/Vec3f;"
+            target = "Lnet/minecraft/client/render/Camera;getHorizontalPlane()Lnet/minecraft/client/util/math/Vector3f;"
         )
     )
-    private static Vec3f constSkyColor(Camera camera) {
-        return Main.takePanorama ? new Vec3f(0.0F, 1.0F, 0.0F) : camera.getHorizontalPlane();
+    private static Vector3f constSkyColor(Camera camera) {
+        return Main.takePanorama ? new Vector3f(0.0F, 1.0F, 0.0F) : camera.getHorizontalPlane();
     }
 }

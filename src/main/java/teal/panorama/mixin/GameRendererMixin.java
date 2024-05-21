@@ -20,4 +20,13 @@ public abstract class GameRendererMixin {
         if (Main.takePanorama) cir.setReturnValue(90.0);
     }
 
+    @Inject(
+        method = "shouldRenderBlockOutline",
+        at = @At("HEAD"),
+        cancellable = true
+    )
+    private void shouldRenderBlockOutline(CallbackInfoReturnable<Boolean> cir) {
+        if (Main.takePanorama) cir.setReturnValue(false);
+    }
+
 }

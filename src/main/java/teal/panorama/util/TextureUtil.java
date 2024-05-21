@@ -21,7 +21,7 @@ public class TextureUtil {
     }
 
     public static NativeImage read(InputStream inputStreamIn) throws IOException {
-        return read(Format.ABGR, inputStreamIn);
+        return read(Format.RGBA, inputStreamIn);
     }
 
     public static NativeImage read(@Nullable Format pixelFormatIn, InputStream inputStreamIn) throws IOException {

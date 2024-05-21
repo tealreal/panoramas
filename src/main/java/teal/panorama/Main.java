@@ -3,23 +3,17 @@ package teal.panorama;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gui.RotatingCubeMapRenderer;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.option.Perspective;
+import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.client.util.InputUtil.Type;
 import net.minecraft.client.util.ScreenshotUtils;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import teal.panorama.event.RenderEvent;
 import teal.panorama.event.RenderWorldEvent;
 import teal.panorama.mixin.MCAccessor;
 import teal.panorama.mixin.RTCAccessor;
@@ -38,7 +32,7 @@ public class Main implements ClientModInitializer {
 
     public static RotatingCubeMapRenderer SKYBOX;
     public static Map<String, NativeImage[]> IMAGES = new HashMap<>();
-    public static Perspective PERSPECTIVE;
+    public static int PERSPECTIVE;
     public static String currentName = "";
     public static NativeImage[] screenshots;
     public static boolean takePanorama = false;
@@ -88,7 +82,7 @@ public class Main implements ClientModInitializer {
                 RenderTickCounter rtc = ((MCAccessor) mc).getRenderTickCounter();
                 ((RTCAccessor) rtc).setTickTime(Float.POSITIVE_INFINITY);
 
-                PERSPECTIVE = mc.options.getPerspective();
+                PERSPECTIVE = mc.options.perspective;
                 currentName = Util.getName().getName();
                 screenshots = new NativeImage[6];
                 takePanorama = true;
@@ -100,8 +94,7 @@ public class Main implements ClientModInitializer {
             }
 
         });
-        WorldRenderEvents.BLOCK_OUTLINE.register(new RenderEvent());
-        WorldRenderEvents.END.register(new RenderWorldEvent());
+        ClientTickEvents.END_WORLD_TICK.register(new RenderWorldEvent());
     }
 
     public enum CaptureResolution {
@@ -118,14 +111,12 @@ public class Main implements ClientModInitializer {
         R_16384(16384);
 
         public static final CaptureResolution[] rs = CaptureResolution.values();
-        public final MutableText name;
+        public final String name;
         public final int res;
 
         CaptureResolution(int i) {
             this.res = i;
-            this.name = Text.of(i == 0 ? "Default" : (i + "px")).copy().append(
-                Text.of((i > 4096) ? " !" : "").copy().formatted(Formatting.RED, Formatting.BOLD)
-            );
+            this.name = i == 0 ? "Default" : (i + "px") + ((i > 4096) ? " §c§l!" : "");
         }
 
     }

@@ -1,6 +1,5 @@
 package teal.panorama.mixin;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.CubeMapRenderer;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.util.Identifier;
