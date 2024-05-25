@@ -10,7 +10,6 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import teal.panorama.Config;
 import teal.panorama.Main;
