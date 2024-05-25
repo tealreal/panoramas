@@ -10,7 +10,6 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import teal.panorama.Config;
 import teal.panorama.Main;
@@ -40,7 +39,7 @@ public class GuiPanoramaSelector extends Screen {
         this.page = 0;
         this.searchBox = new TextFieldWidget(this.client.textRenderer, this.width / 2 - 148, this.height / 2 + 80, 70, 20, null, Text.translatable("panorama.gui.search"));
         this.addDrawableChild(this.searchBox);
-        this.focusOn(this.searchBox);
+        this.setFocused(this.searchBox);
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("panorama.gui.menu.search"), (b) -> {
             if (this.searchBox.getText() != null && !this.searchBox.getText().isEmpty()) {
                 this.panoramas = PanoramaRegistry.getAllForName(this.searchBox.getText());
@@ -139,27 +138,20 @@ public class GuiPanoramaSelector extends Screen {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float partialTicks) {
-        Main.SKYBOX.render(partialTicks, MathHelper.clamp(1.0F, 0.0F, 1.0F));
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        super.render(context, mouseX, mouseY, delta);
         context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("panorama.gui.menu.resolution"), 110, 26, -1052689);
         context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("panorama.gui.menu.selector"), this.width / 2, this.height / 2 - 102, -1);
         if (this.panoramas.isEmpty()) {
             context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("panorama.gui.menu.nosearchresults"), this.width / 2, this.height / 2, -1);
         }
 
-        if (this.searchBox != null) {
-            this.searchBox.render(context, mouseX, mouseY, partialTicks);
-        }
-
-        super.render(context, mouseX, mouseY, partialTicks);
+        if (this.searchBox != null)
+            this.searchBox.render(context, mouseX, mouseY, delta);
     }
 
     @Override
-    public void tick() {
-        if (this.searchBox != null) {
-            this.searchBox.tick();
-        }
-
-        super.tick();
+    public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
+        renderPanoramaBackground(context, delta);
     }
 }

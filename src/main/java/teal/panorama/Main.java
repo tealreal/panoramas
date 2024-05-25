@@ -35,7 +35,6 @@ public class Main implements ClientModInitializer {
     public static int WIN_BACK_WIDTH;
     public static int WIN_BACK_HEIGHT;
 
-    public static RotatingCubeMapRenderer SKYBOX;
     public static Map<String, NativeImage[]> IMAGES = new HashMap<>();
     public static Perspective PERSPECTIVE;
     public static String currentName = "";

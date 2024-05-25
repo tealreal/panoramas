@@ -19,22 +19,15 @@ import teal.panorama.ui.GuiPanoramaSelector;
 @Mixin(TitleScreen.class)
 public abstract class TitleScreenMixin extends Screen {
 
-    @Mutable
-    @Final
-    @Shadow
-    private RotatingCubeMapRenderer backgroundRenderer;
-
     protected TitleScreenMixin(Text title) {
         super(title);
     }
 
-    // Less laggy when loaded, also changes the panorama when called by other mods like Panorama Tweaker.
     @Inject(
         method = "initWidgetsNormal",
         at = @At("RETURN")
     )
     private void initWidgetsNormal(int y, int spacingY, CallbackInfo ci) {
-        Main.SKYBOX = this.backgroundRenderer;
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("panorama.title"), (b) ->
             MinecraftClient.getInstance().setScreen(new GuiPanoramaSelector())
         ).dimensions(4, 4, 60, 20).build());
