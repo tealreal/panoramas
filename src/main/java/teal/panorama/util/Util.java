@@ -64,7 +64,7 @@ public class Util {
         if (packName == null || packName.isEmpty()) {
             Main.textures = null;
             File dat = new File("panorama.dat");
-            if(dat.isFile()) dat.delete();
+            if (dat.isFile()) dat.delete();
         } else {
             NativeImageBackedTexture[] textures = new NativeImageBackedTexture[6];
             FileInputStream fis = new FileInputStream(Config.INSTANCE.save_directory + packName);

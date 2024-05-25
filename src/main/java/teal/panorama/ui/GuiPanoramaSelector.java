@@ -5,6 +5,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
+import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.resource.language.I18n;
@@ -141,6 +142,11 @@ public class GuiPanoramaSelector extends Screen {
         }
 
         super.render(mouseX, mouseY, partialTicks);
+
+        for (AbstractButtonWidget btn : buttons) {
+            if (btn.isHovered())
+                btn.renderToolTip(mouseX, mouseY);
+        }
     }
 
     @Override

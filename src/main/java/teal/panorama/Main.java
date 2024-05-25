@@ -14,7 +14,6 @@ import net.minecraft.client.util.InputUtil.Type;
 import net.minecraft.client.util.ScreenshotUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import teal.panorama.event.RenderWorldEvent;
 import teal.panorama.mixin.MCAccessor;
 import teal.panorama.mixin.RTCAccessor;
 import teal.panorama.util.Util;
@@ -94,7 +93,6 @@ public class Main implements ClientModInitializer {
             }
 
         });
-        ClientTickEvents.END_WORLD_TICK.register(new RenderWorldEvent());
     }
 
     public enum CaptureResolution {

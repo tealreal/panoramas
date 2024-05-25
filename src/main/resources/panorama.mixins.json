@@ -12,7 +12,8 @@
     "MCAccessor",
     "MinecraftClientMixin",
     "RTCAccessor",
-    "TitleScreenMixin"
+    "TitleScreenMixin",
+    "WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
