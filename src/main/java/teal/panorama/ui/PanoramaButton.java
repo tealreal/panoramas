@@ -31,8 +31,8 @@ public class PanoramaButton extends ButtonWidget {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float partialTicks) {
-        super.render(context, mouseX, mouseY, partialTicks);
+    public void renderWidget(DrawContext context, int mouseX, int mouseY, float partialTicks) {
+        super.renderWidget(context, mouseX, mouseY, partialTicks);
         context.drawTexture(this.icon, this.getX(), this.getY(), 0.0F, 0.0F, 64, 64, 64, 64);
         context.drawTexture(BORDER, this.getX() - 2, this.getY() - 2, 0.0F, 0.0F, 70, 70, 70, 70);
     }
