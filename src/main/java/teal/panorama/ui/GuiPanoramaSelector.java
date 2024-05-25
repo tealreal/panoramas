@@ -140,7 +140,7 @@ public class GuiPanoramaSelector extends Screen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float partialTicks) {
-        Main.SKYBOX.render(partialTicks, MathHelper.clamp(1.0F, 0.0F, 1.0F));
+        Main.SKYBOX.render(partialTicks, 1.0F);
         context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("panorama.gui.menu.resolution"), 110, 26, -1052689);
         context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("panorama.gui.menu.selector"), this.width / 2, this.height / 2 - 102, -1);
         if (this.panoramas.isEmpty()) {
@@ -155,11 +155,7 @@ public class GuiPanoramaSelector extends Screen {
     }
 
     @Override
-    public void tick() {
-        if (this.searchBox != null) {
-            this.searchBox.tick();
-        }
-
-        super.tick();
+    public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
     }
+
 }
