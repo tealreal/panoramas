@@ -192,8 +192,9 @@ public class GuiPanoramaSelector extends Screen {
         }
     }
 
+    private static final Identifier BORDER = new Identifier("panorama", "textures/gui/border.png");
+
     public class PanoramaButton extends ButtonWidget {
-        public static Identifier BORDER = new Identifier("panorama", "textures/gui/border.png");
         private final NativeImageBackedTexture icon;
         private final PanoramaInstance panorama;
 
