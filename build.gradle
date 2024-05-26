@@ -37,7 +37,7 @@ int indexMinor = minecraft_version.indexOf(".", indexMajor + 1);
 int major = Integer.parseInt(minecraft_version.substring(indexMajor + 1, indexMinor))
 int minor = indexMinor < 0 ? 0 : Integer.parseInt(minecraft_version.substring(indexMinor + 1))
 def targetJavaVersion = 8
-if (major == 17) targetJavaVersion 16
+if (major == 17) targetJavaVersion = 16
 else if (major == 18 || major == 19) targetJavaVersion = 17
 else if (major == 20) {
     if (minor == 5 || minor == 6)
