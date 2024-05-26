@@ -41,8 +41,8 @@ public class TextureUtil {
 
     public static ByteBuffer readToBuffer(InputStream inputStreamIn) throws IOException {
         ByteBuffer bytebuffer;
-        if (inputStreamIn instanceof FileInputStream fileinputstream) {
-            FileChannel filechannel = fileinputstream.getChannel();
+        if (inputStreamIn instanceof FileInputStream) {
+            FileChannel filechannel = ((FileInputStream) inputStreamIn).getChannel();
             bytebuffer = MemoryUtil.memAlloc((int) filechannel.size() + 1);
 
             while (true) {
